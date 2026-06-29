@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 0 — JavaScript the language
-**Resume at:** Phase 0 → functions + arrow functions, then array methods (`.map`/`.filter`/`.reduce`), then the async boss fight.
+**Resume at:** Phase 0 → the async boss fight: callbacks → **Promises** → `async`/`await`. Then the build target (fetch a public API).
 
 ---
 
@@ -10,9 +10,10 @@
 - [x] I/O vs CPU work — and why a habit tracker (I/O-heavy) fits Node
 - [x] `const` vs `let`
 - [x] Reference semantics: `const` locks the binding, not the contents (can mutate objects/arrays)
-- [ ] Functions + arrow functions
-- [ ] Array methods: `.map`, `.filter`, `.reduce`
-- [ ] Callbacks
+- [x] Functions + arrow functions (declaration vs arrow)
+- [x] Functions are first-class values (store / pass / return)
+- [x] Callbacks (passing `fn` vs calling `fn()`)
+- [x] Array methods: `.map`, `.filter`, `.reduce`
 - [ ] Promises
 - [ ] `async` / `await`  ← the big one
 - [ ] Build: script that fetches a public API and prints results
@@ -30,4 +31,4 @@
 
 ## Environment
 - Node v26, npm 11
-- Working dir: `phase_0/` has `hello.js` (first script — used to learn `const`/`let`)
+- Working dir: `phase_0/` has `hello.js` (`const`/`let`) and `functions.js` (functions, callbacks, map/filter/reduce)
