@@ -1,11 +1,11 @@
 # Progress Tracker
 
-**Currently in:** Phase 0 — JavaScript the language
-**Resume at:** Phase 0 → the async boss fight: callbacks → **Promises** → `async`/`await`. Then the build target (fetch a public API).
+**Currently in:** Phase 1 — Node runtime + npm
+**Resume at:** Phase 1 → `npm init` / `package.json` / `node_modules`, then modules (CommonJS vs ESM), then built-ins (`fs`, `http`). Build: a raw HTTP server with the `http` module.
 
 ---
 
-## Phase 0 — JavaScript
+## Phase 0 — JavaScript ✅ COMPLETE
 - [x] Mental model: Node is single-threaded + non-blocking (the waiter analogy)
 - [x] I/O vs CPU work — and why a habit tracker (I/O-heavy) fits Node
 - [x] `const` vs `let`
@@ -14,12 +14,17 @@
 - [x] Functions are first-class values (store / pass / return)
 - [x] Callbacks (passing `fn` vs calling `fn()`)
 - [x] Array methods: `.map`, `.filter`, `.reduce`
-- [ ] Promises
-- [ ] `async` / `await`  ← the big one
-- [ ] Build: script that fetches a public API and prints results
+- [x] Event loop proven: `1 3 2`, and `setTimeout(fn,0)` still defers
+- [x] Promises (pending → fulfilled / rejected)
+- [x] `async` / `await` (flat code; async fns always return a Promise)
+- [x] Error handling: `try/catch`, block scope, the `fetch`/`res.ok`/404 gotcha
+- [x] Build: `phase_0/async2.js` fetches a public API + prints results
 
-## Phase 1 — Node runtime + npm
-- [ ] not started
+## Phase 1 — Node runtime + npm ← CURRENT
+- [ ] `npm init`, `package.json`, `node_modules`, installing packages
+- [ ] Modules: `require`/CommonJS vs `import`/ESM
+- [ ] Built-ins: `fs`, `http`, `process.env`
+- [ ] Build: raw HTTP server with the `http` module (one JSON route)
 
 ## Phase 2 — Express + habit tracker
 - [ ] not started
