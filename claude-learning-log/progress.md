@@ -1,7 +1,7 @@
 # Progress Tracker
 
-**Currently in:** Phase 1 — Node runtime + npm
-**Resume at:** Phase 1 → `npm init` / `package.json` / `node_modules`, then modules (CommonJS vs ESM), then built-ins (`fs`, `http`). Build: a raw HTTP server with the `http` module.
+**Currently in:** Phase 2 — Express + the habit tracker
+**Resume at:** Phase 2 → install Express, rebuild the `/habits` route the clean way (`app.get`, `res.json`). Then project structure, PostgreSQL + Prisma, env vars, validation (Zod).
 
 ---
 
@@ -20,14 +20,20 @@
 - [x] Error handling: `try/catch`, block scope, the `fetch`/`res.ok`/404 gotcha
 - [x] Build: `phase_0/async2.js` fetches a public API + prints results
 
-## Phase 1 — Node runtime + npm ← CURRENT
-- [ ] `npm init`, `package.json`, `node_modules`, installing packages
-- [ ] Modules: `require`/CommonJS vs `import`/ESM
-- [ ] Built-ins: `fs`, `http`, `process.env`
-- [ ] Build: raw HTTP server with the `http` module (one JSON route)
+## Phase 1 — Node runtime + npm ✅ COMPLETE
+- [x] `npm init`, `package.json`, `node_modules`, installing packages (`dayjs`)
+- [x] `package.json` (intent + ranges) vs `package-lock.json` (exact + integrity hash); commit lock, gitignore node_modules
+- [x] Modules: CommonJS (default) vs ESM (`"type": "module"`, strict extensions); `export` as gatekeeper
+- [x] Built-in `http`; `req.method` + `req.url`; client/server split; `node --watch` (no auto-reload)
+- [x] Build: raw HTTP server with `GET /habits` returning JSON (+ 404), `JSON.stringify` / Content-Type
+- [x] Felt why raw `http` doesn't scale → motivation for Express
 
-## Phase 2 — Express + habit tracker
-- [ ] not started
+## Phase 2 — Express + habit tracker ← CURRENT
+- [ ] Install Express; rebuild `/habits` route (`app.get`, `res.json`) — see the boilerplate collapse
+- [ ] Routing, middleware, req/res in Express
+- [ ] PostgreSQL + Prisma (schema, migrations, queries)
+- [ ] Project structure, env vars, error handling, validation (Zod)
+- [ ] Build the habit-tracker API (CRUD + check-ins + streak endpoint)
 
 ## Phase 3 — Real-world
 - [ ] not started
@@ -36,4 +42,4 @@
 
 ## Environment
 - Node v26, npm 11
-- Working dir: `phase_0/` has `hello.js` (`const`/`let`) and `functions.js` (functions, callbacks, map/filter/reduce)
+- Working dir: `phase_0/` (`hello.js`, `functions.js`, `async1.js`, `async2.js`); `phase_1/` (`package.json` + dayjs, `math.js`/`app.js` ESM, `server.js` raw HTTP server)
