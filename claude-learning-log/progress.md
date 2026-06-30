@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 → install Express, rebuild the `/habits` route the clean way (`app.get`, `res.json`). Then project structure, PostgreSQL + Prisma, env vars, validation (Zod).
+**Resume at:** Phase 2 → add **persistence**: the in-memory `habits` array resets on restart, so bring in **PostgreSQL + Prisma** (schema, migrations, swap array for DB queries). Then project structure, env vars, validation (Zod).
 
 ---
 
@@ -29,11 +29,12 @@
 - [x] Felt why raw `http` doesn't scale → motivation for Express
 
 ## Phase 2 — Express + habit tracker ← CURRENT
-- [ ] Install Express; rebuild `/habits` route (`app.get`, `res.json`) — see the boilerplate collapse
-- [ ] Routing, middleware, req/res in Express
-- [ ] PostgreSQL + Prisma (schema, migrations, queries)
+- [x] Install Express; rebuild `/habits` (`app.get`, `res.json`) — boilerplate collapsed
+- [x] Routing, middleware (`express.json()`), req/res, route vs query params, status codes
+- [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
+- [ ] PostgreSQL + Prisma (schema, migrations, queries) — persistence; array currently resets on restart
 - [ ] Project structure, env vars, error handling, validation (Zod)
-- [ ] Build the habit-tracker API (CRUD + check-ins + streak endpoint)
+- [ ] Habit-tracker API extras: daily check-ins + streak endpoint
 
 ## Phase 3 — Real-world
 - [ ] not started
@@ -42,4 +43,4 @@
 
 ## Environment
 - Node v26, npm 11
-- Working dir: `phase_0/` (`hello.js`, `functions.js`, `async1.js`, `async2.js`); `phase_1/` (`package.json` + dayjs, `math.js`/`app.js` ESM, `server.js` raw HTTP server)
+- Working dir: `phase_0/` (`hello.js`, `functions.js`, `async1.js`, `async2.js`); `phase_1/` (dayjs, `math.js`/`app.js` ESM, `server.js` raw HTTP); `phase_2/` (Express `server.js` — full in-memory CRUD)
