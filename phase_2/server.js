@@ -19,9 +19,9 @@ app.get("/habits", async (req, res) => {
   res.json(habits);
 });
 
-app.get("/habits/:id", (req, res) => {
-  console.log(req.params);
-  const habit = habits.find((h) => h.id === Number(req.params.id));
+app.get("/habits/:id", async (req, res) => {
+  const habit = await prisma.habit.findUnique({ where: { id: Number(req.params.id) } });
+  if (!habit) return res.status(404).json({ error: "Habit not found" });
   res.json(habit);
 });
 
@@ -37,25 +37,40 @@ app.post("/habits", async (req, res) => {
   res.status(201).json(habit);
 });
 
-app.delete("/habits/:id", (req, res) => {
-  const index = habits.findIndex((h) => h.id === Number(req.params.id));
-  if (index === -1) return res.status(404).json({ error: "Habit not found" });
-  habits.splice(index, 1);
-  res.status(204).end();
+app.delete("/habits/:id", async (req, res) => {
+  try {
+    const habit = await prisma.habit.delete({
+      where: { id: Number(req.params.id) }
+    });
+    res.status(204).end()
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+    throw error;
+  }
 });
 
 
 /**
  * curl -X PATCH http://localhost:3000/habits/1 -H "Content-Type: application/json" -d '{"done": false}'
  */
-app.patch("/habits/:id", (req, res) => {
-  const index = habits.findIndex((h) => h.id === Number(req.params.id));
-  if (index === -1) return res.status(404).json({ error: "Habit not found" });
-  habits[index] = { ...habits[index], ...req.body };
-  res.json(habits[index]);
+app.patch("/habits/:id", async (req, res) => {
+  try {
+    const habit = await prisma.habit.update({
+      where: { id: Number(req.params.id) },
+      data: req.body,
+    });
+    res.json(habit);
+  } catch (error) {
+    //error.code === "P2025" — that's Prisma's specific code for "record not found." 
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+    throw error; // anything else is a real bug — let it bubble up
+  }
 });
 
-
 app.listen(3000, () => {
-    console.log("server running on http://localhost:3000");
+  console.log("server running on http://localhost:3000");
 });;

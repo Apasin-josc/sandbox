@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 → convert remaining routes to Prisma (`GET /habits/:id` → `findUnique`, `PATCH` → `update`, `DELETE` → `delete`; they still use in-memory `.find`/`.splice`). Then **validation with Zod**, then project structure, then check-ins + streak endpoint.
+**Resume at:** Phase 2 → **validation with Zod** (validate POST/PATCH bodies → clean 400s instead of 500s). Then project structure (split up `server.js`), then check-ins + streak endpoint.
 
 ---
 
@@ -32,7 +32,7 @@
 - [x] Install Express; rebuild `/habits` (`app.get`, `res.json`) — boilerplate collapsed
 - [x] Routing, middleware (`express.json()`), req/res, route vs query params, status codes
 - [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
-- [~] PostgreSQL + Prisma: Docker Postgres running, schema + migration done, `GET`/`POST` on Prisma, **persistence proven**. TODO: convert `GET /:id`, `PATCH`, `DELETE` to Prisma (`findUnique`/`update`/`delete`)
+- [x] PostgreSQL + Prisma: Docker Postgres, schema + migration, **full CRUD on Prisma** (findMany/findUnique/create/update/delete), P2025→404 via try/catch, persistence proven
 - [ ] Validation with Zod (reject bad POST bodies)
 - [ ] Project structure (routes/controllers/services), env vars, error handling
 - [ ] Habit-tracker API extras: daily check-ins + streak endpoint
