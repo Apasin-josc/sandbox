@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 → add **persistence**: the in-memory `habits` array resets on restart, so bring in **PostgreSQL + Prisma** (schema, migrations, swap array for DB queries). Then project structure, env vars, validation (Zod).
+**Resume at:** Phase 2 → convert remaining routes to Prisma (`GET /habits/:id` → `findUnique`, `PATCH` → `update`, `DELETE` → `delete`; they still use in-memory `.find`/`.splice`). Then **validation with Zod**, then project structure, then check-ins + streak endpoint.
 
 ---
 
@@ -32,8 +32,9 @@
 - [x] Install Express; rebuild `/habits` (`app.get`, `res.json`) — boilerplate collapsed
 - [x] Routing, middleware (`express.json()`), req/res, route vs query params, status codes
 - [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
-- [ ] PostgreSQL + Prisma (schema, migrations, queries) — persistence; array currently resets on restart
-- [ ] Project structure, env vars, error handling, validation (Zod)
+- [~] PostgreSQL + Prisma: Docker Postgres running, schema + migration done, `GET`/`POST` on Prisma, **persistence proven**. TODO: convert `GET /:id`, `PATCH`, `DELETE` to Prisma (`findUnique`/`update`/`delete`)
+- [ ] Validation with Zod (reject bad POST bodies)
+- [ ] Project structure (routes/controllers/services), env vars, error handling
 - [ ] Habit-tracker API extras: daily check-ins + streak endpoint
 
 ## Phase 3 — Real-world
@@ -43,4 +44,6 @@
 
 ## Environment
 - Node v26, npm 11
-- Working dir: `phase_0/` (`hello.js`, `functions.js`, `async1.js`, `async2.js`); `phase_1/` (dayjs, `math.js`/`app.js` ESM, `server.js` raw HTTP); `phase_2/` (Express `server.js` — full in-memory CRUD)
+- Working dir: `phase_0/` (JS basics + async); `phase_1/` (raw HTTP server); `phase_2/` (Express + Prisma — `server.js`, `prisma/schema.prisma`, migrations, `.env`)
+- **Docker:** container `habit-postgres` (postgres:16) on `localhost:5432`, DB `habits`, pw `secret`. If stopped: start Docker Desktop, then `docker start habit-postgres`.
+- **Prisma pinned to v6** — do NOT upgrade to 7 mid-learning (v7 changed config + needs driver adapters, docs haven't caught up).

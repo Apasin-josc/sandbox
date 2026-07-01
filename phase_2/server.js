@@ -1,5 +1,7 @@
 import express from "express";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const app = express();
 
 /**
@@ -12,8 +14,9 @@ const habits = [
   { id: 1, name: "read", done: true },
 ];
 
-app.get("/habits", (req, res) => {
-    res.json(habits);
+app.get("/habits", async (req, res) => {
+  const habits = await prisma.habit.findMany();
+  res.json(habits);
 });
 
 app.get("/habits/:id", (req, res) => {
@@ -23,14 +26,15 @@ app.get("/habits/:id", (req, res) => {
 });
 
 /**
- * curl -X POST http://localhost:3000/habits \
-  -H "Content-Type: application/json" \
-  -d '{"name": "meditate"}'
+ * curl -X POST http://localhost:3000/habits 
+ * -H "Content-Type: application/json" 
+ * -d '{"name": "meditate"}'
  */
-app.post("/habits", (req, res) => {
-  const newHabit = { id: habits.length + 1, name: req.body.name, done: false };
-  habits.push(newHabit);
-  res.status(201).json(newHabit);
+app.post("/habits", async (req, res) => {
+  const habit = await prisma.habit.create({
+    data: { name: req.body.name },
+  });
+  res.status(201).json(habit);
 });
 
 app.delete("/habits/:id", (req, res) => {
