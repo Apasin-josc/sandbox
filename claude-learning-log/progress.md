@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 → **validation with Zod** (validate POST/PATCH bodies → clean 400s instead of 500s). Then project structure (split up `server.js`), then check-ins + streak endpoint.
+**Resume at:** Phase 2 → **project structure** (split the long `server.js` into routes/controllers/services, move Zod schemas out). Then check-ins + streak endpoint. Optional polish: JSON-error middleware (→400), `.refine()` for empty PATCH.
 
 ---
 
@@ -33,8 +33,8 @@
 - [x] Routing, middleware (`express.json()`), req/res, route vs query params, status codes
 - [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
 - [x] PostgreSQL + Prisma: Docker Postgres, schema + migration, **full CRUD on Prisma** (findMany/findUnique/create/update/delete), P2025→404 via try/catch, persistence proven
-- [ ] Validation with Zod (reject bad POST bodies)
-- [ ] Project structure (routes/controllers/services), env vars, error handling
+- [x] Validation with Zod: `safeParse` on POST (`name` required) + PATCH (`.partial()`); clean 400s; pass `result.data` not `req.body`; 4xx vs 5xx
+- [ ] Project structure (routes/controllers/services), move schemas out, JSON-error middleware
 - [ ] Habit-tracker API extras: daily check-ins + streak endpoint
 
 ## Phase 3 — Real-world

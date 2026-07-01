@@ -1,5 +1,23 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+
+const createHabitSchema = z.object({
+  name: z.string().min(1),
+});
+
+const updateHabitSchema = z.object({
+  name: z.string().min(1),
+  done: z.boolean(),
+}).partial();
+//.refine() instead of partial can enforce "at least one key present"
+//this because when we send a empty {} zod is letting it pass, it doesn't change anything but well just FYI
+
+
+//const createHabitSchema = z.object({ name: z.string().min(1) }).strict();
+// now { name: "read", progress: 80 } → FAILS if i don't type the strict the progress is going to pass but is not going
+//to write progress on the database it just passes and thats all, extra fields just vanish.
+
 
 const prisma = new PrismaClient();
 const app = express();
@@ -31,9 +49,12 @@ app.get("/habits/:id", async (req, res) => {
  * -d '{"name": "meditate"}'
  */
 app.post("/habits", async (req, res) => {
-  const habit = await prisma.habit.create({
-    data: { name: req.body.name },
-  });
+  const result = createHabitSchema.safeParse(req.body);
+  //returns { success: true, data } or { success: false, error }
+  if (!result.success) {
+    return res.status(400).json({ error: result.error.issues });
+  }
+  const habit = await prisma.habit.create({ data: result.data });
   res.status(201).json(habit);
 });
 
@@ -56,18 +77,19 @@ app.delete("/habits/:id", async (req, res) => {
  * curl -X PATCH http://localhost:3000/habits/1 -H "Content-Type: application/json" -d '{"done": false}'
  */
 app.patch("/habits/:id", async (req, res) => {
+  const result = updateHabitSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error.issues });
+  }
   try {
     const habit = await prisma.habit.update({
       where: { id: Number(req.params.id) },
-      data: req.body,
+      data: result.data,
     });
     res.json(habit);
   } catch (error) {
-    //error.code === "P2025" — that's Prisma's specific code for "record not found." 
-    if (error.code === "P2025") {
-      return res.status(404).json({ error: "Habit not found" });
-    }
-    throw error; // anything else is a real bug — let it bubble up
+    if (error.code === "P2025") return res.status(404).json({ error: "Habit not found" });
+    throw error;
   }
 });
 

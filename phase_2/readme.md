@@ -87,3 +87,70 @@ model Habit {
 """
 
 to turn this schcema into an actual table npx prisma migrate dev --name init
+
+#CRUD METHODS IN PRISMA
+"""
+app.get("/habits", async (req, res) => {
+  const habits = await prisma.habit.findMany();
+
+app.get("/habits/:id", async (req, res) => {
+  const habit = await prisma.habit.findUnique({ where: { id: Number(req.params.id) } });
+
+app.post("/habits", async (req, res) => {
+  const habit = await prisma.habit.create({
+    data: { name: req.body.name },
+  });
+
+app.patch("/habits/:id", async (req, res) => {
+  try {
+    const habit = await prisma.habit.update({
+      where: { id: Number(req.params.id) },
+      data: req.body,
+    });
+    res.json(habit);
+  } catch (error) {
+    //error.code === "P2025" — that's Prisma's specific code for "record not found." 
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+    throw error; // anything else is a real bug — let it bubble up
+  }
+});
+
+app.delete("/habits/:id", async (req, res) => {
+  try {
+    const habit = await prisma.habit.delete({
+      where: { id: Number(req.params.id) }
+    });
+    res.status(204).end()
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+    throw error;
+  }
+});
+
+"""
+
+
+Zod schema is a description of the shape you expect
+"""
+npm install zod
+"""
+
+
+"""
+import { z } from "zod";
+
+const createHabitSchema = z.object({
+  name: z.string().min(1),
+});
+
+z.object({ ... }) → "the thing I'm validating is an object with these keys."
+name: → I expect a key called name.
+z.string() → its value must be a string (so 123 — a number — fails).
+.min(1) → a chained rule on that string: it must be at least 1 character long.
+"""
+
+https://zod.dev/api
