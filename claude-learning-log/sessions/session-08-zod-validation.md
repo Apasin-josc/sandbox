@@ -47,8 +47,23 @@ const habit = await prisma.habit.create({ data: result.data });
 ### Middleware pipeline gotcha (found by accident)
 - Sent `{"done": yes}` (unquoted `yes` = **invalid JSON**). It died at **`express.json()`** (JSON.parse) *before* reaching the route/Zod → ugly HTML `500`.
 - Lesson: the pipeline is `express.json()` → route → Zod. Malformed JSON fails at stage 1.
-- **Known gap (polish list, not urgent):** add error-handling middleware to catch body-parser errors → return `400 "Invalid JSON"` instead of a `500`.
 - To test Zod's *type* check, send valid JSON with a wrong type: `{"done": "yes"}` → reaches Zod → `400 "expected boolean, received string"`. ✓
+
+### Error-handling middleware (FIXED the ugly HTML — done this session)
+- Added a global error handler at the **bottom** of `server.js`. Express recognizes it by its **4 args** `(err, req, res, next)` (normal middleware has 3):
+  ```js
+  app.use((err, req, res, next) => {
+    if (err.type === "entity.parse.failed") {
+      return res.status(400).json({ error: "Invalid JSON in request body" });
+    }
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  });
+  ```
+- **Express 5** (5.2.1) auto-forwards errors thrown in `async` handlers here — so it catches BOTH the body-parser JSON error (`err.type === "entity.parse.failed"` → clean `400`) AND the routes' re-thrown `throw error` (→ clean `500` JSON, no stack trace leaked).
+- **Must be registered LAST** — Express only routes errors *downward* to a handler declared after the code that threw (the "net under the trapeze"). Above the routes = errors sail past it.
+- **Security:** log full `err` to the server (`console.error`) for debugging; send the client only a generic `"Internal server error"`. A raw stack trace leaks file paths, table/column names, query structure, dependency versions — gifts to an attacker.
+- Verified: `{"done": yes}` (bad JSON) → `400 {"error":"Invalid JSON in request body"}`. ✓
 
 ### Empty PATCH body `{}`
 - Passes: `.partial()` makes empty valid → Prisma runs `update` with empty `data` → changes nothing, returns the row unchanged. Not "ignored" — a real no-op update.
@@ -69,8 +84,8 @@ const habit = await prisma.habit.create({ data: result.data });
 - The middleware order (json parse → route → validation).
 
 ## Pick up next time
-- **Project structure:** `server.js` is getting long — split into routes / controllers / (services) and move the Zod schemas out. Understand the separation-of-concerns layout.
-- Optional polish: JSON-error middleware (→400), `.refine()` for empty PATCH.
+- **Project structure:** `server.js` is getting long — split into routes / controllers / (services) and move the Zod schemas + error handler out. Understand the separation-of-concerns layout.
+- Optional polish: `.refine()` for empty PATCH. (JSON-error middleware — DONE this session.)
 - Then the habit-tracker features: daily **check-ins** + **streak** endpoint.
 
 ## Environment reminder

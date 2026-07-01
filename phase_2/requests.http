@@ -1,0 +1,85 @@
+### Habit Tracker API — click "Send Request" above each block
+### (needs the VS Code extension: REST Client — humao.rest-client)
+### Requests are separated by lines starting with ###
+
+@baseUrl = http://localhost:3000
+
+### List all habits
+GET {{baseUrl}}/habits
+
+### Get one habit by id
+GET {{baseUrl}}/habits/1
+
+### Get a habit that doesn't exist (expect 404)
+GET {{baseUrl}}/habits/999
+
+### Create a habit (expect 201)
+POST {{baseUrl}}/habits
+Content-Type: application/json
+
+{
+  "name": "meditate"
+}
+
+### Create with empty name (expect 400 — Zod)
+POST {{baseUrl}}/habits
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+### Create with a wrong-type name (expect 400 — Zod)
+POST {{baseUrl}}/habits
+Content-Type: application/json
+
+{
+  "name": 123
+}
+
+### Update a habit — partial (expect 200)
+PATCH {{baseUrl}}/habits/1
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Update with wrong type (expect 400 — Zod)
+PATCH {{baseUrl}}/habits/1
+Content-Type: application/json
+
+{
+  "done": "yes"
+}
+
+### Update a missing habit (expect 404 — P2025)
+PATCH {{baseUrl}}/habits/999
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Malformed JSON (expect 400 — error handler)
+POST {{baseUrl}}/habits
+Content-Type: application/json
+
+{ "name": read }
+
+### Delete a habit (expect 204, empty body)
+DELETE {{baseUrl}}/habits/1
+
+### Delete a missing habit (expect 404)
+DELETE {{baseUrl}}/habits/999
+
+### ─── Check-ins ───
+
+### Log a check-in for habit 1 (expect 201) — run a few times
+POST {{baseUrl}}/habits/1/checkins
+
+### List habit 1's check-ins (expect array, newest first)
+GET {{baseUrl}}/habits/1/checkins
+
+### Check-in for a missing habit (expect 404)
+POST {{baseUrl}}/habits/999/checkins

@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 → **project structure** (split the long `server.js` into routes/controllers/services, move Zod schemas out). Then check-ins + streak endpoint. Optional polish: JSON-error middleware (→400), `.refine()` for empty PATCH.
+**Resume at:** Phase 2 FINALE → **streak endpoint** `GET /habits/:id/streak` (logic, not CRUD — walk check-in dates, count consecutive days; use `dayjs`). Then Phase 2 is DONE. Optional polish: `.refine()` empty PATCH, FK `ON DELETE CASCADE`.
 
 ---
 
@@ -34,11 +34,19 @@
 - [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
 - [x] PostgreSQL + Prisma: Docker Postgres, schema + migration, **full CRUD on Prisma** (findMany/findUnique/create/update/delete), P2025→404 via try/catch, persistence proven
 - [x] Validation with Zod: `safeParse` on POST (`name` required) + PATCH (`.partial()`); clean 400s; pass `result.data` not `req.body`; 4xx vs 5xx
-- [ ] Project structure (routes/controllers/services), move schemas out, JSON-error middleware
-- [ ] Habit-tracker API extras: daily check-ins + streak endpoint
+- [x] Error-handling middleware `(err,req,res,next)` at bottom: catches bad-JSON (→400) + unexpected errors (→500, no leak), logs real err server-side
+- [x] Project structure: split into `src/` (server, routes, controllers, schemas, lib/prisma, middleware); `express.Router()` mounted with prefix; one-way import flow; `npm run dev`; see `phase_2/structure.md`
+- [x] REST Client (`requests.http`) to replace curl
+- [x] Relations (one-to-many): `Checkin` model + `habitId` FK; migration + FK constraint; check-in endpoints (`POST`/`GET /habits/:id/checkins`)
+- [ ] Streak endpoint `GET /habits/:id/streak` (LAST Phase 2 feature — uses dayjs)
 
 ## Phase 3 — Real-world
-- [ ] not started
+**Framing: NO new `phase_3/` folder.** The habit tracker is a real app — Phase 3 happens INSIDE this codebase (consider graduating `phase_2/` → `habit-tracker/` with its own git repo). Phases are learning stages, not folders.
+- [ ] Auth (JWT): register/login, protect routes
+- [ ] Tests (vitest/node:test + supertest)
+- [ ] Deploy (Railway/Render + managed Postgres)
+- [ ] Dockerfile for the app
+- [ ] Migrate the codebase to TypeScript (now the "why" is felt)
 
 ---
 
