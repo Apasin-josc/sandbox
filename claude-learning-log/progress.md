@@ -1,7 +1,7 @@
 # Progress Tracker
 
-**Currently in:** Phase 2 — Express + the habit tracker
-**Resume at:** Phase 2 FINALE → **streak endpoint** `GET /habits/:id/streak` (logic, not CRUD — walk check-in dates, count consecutive days; use `dayjs`). Then Phase 2 is DONE. Optional polish: `.refine()` empty PATCH, FK `ON DELETE CASCADE`.
+**Currently in:** Phase 3 — Real-world (Phase 2 ✅ COMPLETE)
+**Resume at:** Phase 3 → decide whether to graduate `phase_2/` → `habit-tracker/` repo, then start **Auth (JWT)**: likely a `User` model + relation (habits belong to a user), register/login, protect routes. Optional Phase 2 polish: `.refine()` empty PATCH, FK `ON DELETE CASCADE`.
 
 ---
 
@@ -28,7 +28,7 @@
 - [x] Build: raw HTTP server with `GET /habits` returning JSON (+ 404), `JSON.stringify` / Content-Type
 - [x] Felt why raw `http` doesn't scale → motivation for Express
 
-## Phase 2 — Express + habit tracker ← CURRENT
+## Phase 2 — Express + habit tracker ✅ COMPLETE
 - [x] Install Express; rebuild `/habits` (`app.get`, `res.json`) — boilerplate collapsed
 - [x] Routing, middleware (`express.json()`), req/res, route vs query params, status codes
 - [x] Full in-memory CRUD: GET list, GET :id, POST (201), PATCH (spread-merge), DELETE (204)
@@ -38,7 +38,7 @@
 - [x] Project structure: split into `src/` (server, routes, controllers, schemas, lib/prisma, middleware); `express.Router()` mounted with prefix; one-way import flow; `npm run dev`; see `phase_2/structure.md`
 - [x] REST Client (`requests.http`) to replace curl
 - [x] Relations (one-to-many): `Checkin` model + `habitId` FK; migration + FK constraint; check-in endpoints (`POST`/`GET /habits/:id/checkins`)
-- [ ] Streak endpoint `GET /habits/:id/streak` (LAST Phase 2 feature — uses dayjs)
+- [x] Streak endpoint `GET /habits/:id/streak`: check-ins → unique-day `Set` → walk backward from today counting consecutive days (dayjs); grace rule; self-designed algorithm
 
 ## Phase 3 — Real-world
 **Framing: NO new `phase_3/` folder.** The habit tracker is a real app — Phase 3 happens INSIDE this codebase (consider graduating `phase_2/` → `habit-tracker/` with its own git repo). Phases are learning stages, not folders.

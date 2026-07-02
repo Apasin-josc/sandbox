@@ -7,6 +7,7 @@ import {
   deleteHabit,
   createCheckin,
   listHabitsCheckin,
+  getStreak
 } from "../controllers/habits.controller.js";
 
 // A Router = a mini-app for one group of routes.
@@ -21,3 +22,6 @@ habitsRouter.delete("/:id", deleteHabit); // DELETE /habits/:id
 
 habitsRouter.post("/:id/checkins", createCheckin);
 habitsRouter.get("/:id/checkins", listHabitsCheckin);
+
+habitsRouter.get("/:id/streak", getStreak);
+

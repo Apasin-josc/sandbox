@@ -3,6 +3,7 @@ import {
   createHabitSchema,
   updateHabitSchema,
 } from "../schemas/habit.schema.js";
+import dayjs from "dayjs";
 
 // GET /habits
 export async function listHabits(req, res) {
@@ -86,4 +87,28 @@ export async function listHabitsCheckin(req, res) {
     orderBy: { createdAt: "desc" },
   });
   res.json(checkins);
+}
+
+export async function getStreak(req, res) {
+  const habitId = Number(req.params.id);
+  const habit = await prisma.habit.findUnique({ where: { id: habitId } });
+  if (!habit) return res.status(404).json({ error: "Habit not found" });
+  const checkins = await prisma.checkin.findMany({ where: { habitId } });
+  const days = new Set(
+    checkins.map((c) => dayjs(c.createdAt).format("YYYY-MM-DD"))
+  );
+
+  let streak = 0
+  let cursor = dayjs();
+
+  if (!days.has(cursor.format("YYYY-MM-DD"))) {
+    cursor = cursor.subtract(1, "day");
+  }
+
+  while (days.has(cursor.format("YYYY-MM-DD"))) {
+    streak++;
+    cursor = cursor.subtract(1, "day");
+  }
+
+  res.json({ habitId, streak });
 }
