@@ -83,3 +83,70 @@ GET {{baseUrl}}/habits/1/checkins
 
 ### Check-in for a missing habit (expect 404)
 POST {{baseUrl}}/habits/999/checkins
+
+### ─── Auth ───
+
+### Register a new user (expect 201, safe fields, NO password)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "jose@mail.com",
+  "password": "supersecret",
+  "username": "jose"
+}
+
+### Register with the SAME email again (expect error — email is @unique)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "jose@mail.com",
+  "password": "supersecret",
+  "username": "jose2"
+}
+
+### Register with a bad email / short password (expect 400 — Zod)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "not-an-email",
+  "password": "123",
+  "username": "x"
+}
+
+### Login (expect { token }). The "# @name login" lets later requests reuse the token.
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "jose@mail.com",
+  "password": "supersecret"
+}
+
+### Login with wrong password (expect 401 "Invalid credentials")
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "jose@mail.com",
+  "password": "wrongpassword"
+}
+
+### Login with an email that doesn't exist (expect SAME 401 — user enumeration defense)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "nobody@mail.com",
+  "password": "whatever123"
+}
+
+### ── Once you've run "login" above, this token is reusable ──
+@token = {{login.response.body.token}}
+
+### (Later) example of a protected request using the captured token:
+# GET {{baseUrl}}/habits
+# Authorization: Bearer {{token}}

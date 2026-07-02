@@ -16,6 +16,9 @@ model Habit {
   done      Boolean   @default(false)
   createdAt DateTime  @default(now())
   checkins  Checkin[] // one habit HAS MANY check-ins (virtual — not a column)
+
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model Checkin {
@@ -25,4 +28,13 @@ model Checkin {
   // the relation:
   habitId   Int                                              // the foreign key column (holds a Habit's id)
   habit     Habit    @relation(fields: [habitId], references: [id]) // tells Prisma: habitId → Habit.id
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String
+  password  String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  habits    Habit[]
 }

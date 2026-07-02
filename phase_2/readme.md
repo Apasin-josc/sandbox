@@ -154,3 +154,16 @@ z.string() → its value must be a string (so 123 — a number — fails).
 """
 
 https://zod.dev/api
+
+
+"""
+npx prisma migrate reset
+npx prisma migrate dev --name add_users
+"""
+
+
+
+installing bcrypt for hashing and jsonwebtoken for sending tokens
+"""
+npm install bcrypt jsonwebtoken
+"""
