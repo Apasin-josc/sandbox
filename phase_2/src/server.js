@@ -2,6 +2,7 @@ import express from "express";
 import { habitsRouter } from "./routes/habits.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { authenticate } from "./middleware/authenticate.js";
 
 const app = express();
 
@@ -9,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 // 2. mount the habits routes under the /habits prefix
-app.use("/habits", habitsRouter);
+app.use("/habits", authenticate, habitsRouter); // ← authenticate runs BEFORE the habit routes
 
 app.use("/auth", authRouter);
 

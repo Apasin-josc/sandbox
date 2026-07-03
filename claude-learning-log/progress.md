@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 3 — Real-world (Phase 2 ✅ COMPLETE)
-**Resume at:** Phase 3 auth — FINISH it: (1) **auth middleware** `authenticate` (read `Authorization: Bearer`, `jwt.verify`, attach `req.user`, 401 on fail); (2) **protect habit routes** with it; (3) **scope habits to the user** (create sets `userId: req.user.id`; queries filter by `userId`). Register + login + JWT already done.
+**Resume at:** Phase 3 → **Auth is DONE & verified.** Next: **tests** (vitest/node:test + supertest — automate the flow), then **deploy** (Railway/Render; graduate `phase_2/`→`habit-tracker/` repo first), then **Dockerfile**, then **TypeScript** migration.
 
 ---
 
@@ -42,7 +42,7 @@
 
 ## Phase 3 — Real-world
 **Framing: NO new `phase_3/` folder.** The habit tracker is a real app — Phase 3 happens INSIDE this codebase (consider graduating `phase_2/` → `habit-tracker/` with its own git repo). Phases are learning stages, not folders.
-- [~] Auth (JWT): ✅ `User` model + `Habit.userId` relation, register (bcrypt hash, P2002→409), login (bcrypt.compare, JWT, user-enumeration-safe 401), `--env-file` for `JWT_SECRET`. TODO: auth middleware + protect routes + scope habits to user
+- [x] Auth (JWT) — COMPLETE & verified: User model + Habit.userId relation, register (bcrypt, P2002→409), login (bcrypt.compare, JWT, enum-safe 401), `authenticate` middleware (Bearer, jwt.verify, req.user), all `/habits*` routes protected + user-scoped (findFirst id+userId). Isolation tested: users can't touch each other's data.
 - [ ] Tests (vitest/node:test + supertest)
 - [ ] Deploy (Railway/Render + managed Postgres)
 - [ ] Dockerfile for the app
