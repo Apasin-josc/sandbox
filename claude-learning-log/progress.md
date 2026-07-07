@@ -1,7 +1,7 @@
 # Progress Tracker
 
 **Currently in:** Phase 3 — Real-world (Phase 2 ✅ COMPLETE)
-**Resume at:** Phase 3 → **Auth is DONE & verified.** Next: **tests** (vitest/node:test + supertest — automate the flow), then **deploy** (Railway/Render; graduate `phase_2/`→`habit-tracker/` repo first), then **Dockerfile**, then **TypeScript** migration.
+**Resume at:** Phase 3 → **FINISH tests**: separate test DB + reset between runs + `JWT_SECRET` in test env, then stateful integration tests (register→login→create→isolation). (Test intro + TypeScript migration both DONE.) Then **deploy** (Railway/Render; graduate `phase_2/`→`habit-tracker/` repo) + **Dockerfile**.
 
 ---
 
@@ -43,10 +43,10 @@
 ## Phase 3 — Real-world
 **Framing: NO new `phase_3/` folder.** The habit tracker is a real app — Phase 3 happens INSIDE this codebase (consider graduating `phase_2/` → `habit-tracker/` with its own git repo). Phases are learning stages, not folders.
 - [x] Auth (JWT) — COMPLETE & verified: User model + Habit.userId relation, register (bcrypt, P2002→409), login (bcrypt.compare, JWT, enum-safe 401), `authenticate` middleware (Bearer, jwt.verify, req.user), all `/habits*` routes protected + user-scoped (findFirst id+userId). Isolation tested: users can't touch each other's data.
-- [ ] Tests (vitest/node:test + supertest)
+- [~] Tests: vitest + supertest set up; app/server split; 2 stateless tests pass. TODO: test DB + reset + stateful integration tests
 - [ ] Deploy (Railway/Render + managed Postgres)
 - [ ] Dockerfile for the app
-- [ ] Migrate the codebase to TypeScript (now the "why" is felt)
+- [x] TypeScript: full migration — `.ts` everywhere, `tsconfig`, Node runs TS directly + `tsc --noEmit` checks (0 errors), typed handlers, `req.user` declaration merging, Prisma error narrowing, `express.d.ts`. Verified: typecheck + tests + server all green.
 
 ---
 

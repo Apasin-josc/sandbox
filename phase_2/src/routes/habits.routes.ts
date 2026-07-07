@@ -8,7 +8,7 @@ import {
   createCheckin,
   listHabitsCheckin,
   getStreak
-} from "../controllers/habits.controller.js";
+} from "../controllers/habits.controller.ts";
 
 // A Router = a mini-app for one group of routes.
 // Paths here are RELATIVE — they get prefixed when mounted in server.js.

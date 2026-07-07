@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "types": ["node"],
+
+    // We don't compile with tsc — Node runs the .ts directly (type stripping).
+    // tsc is used ONLY to type-CHECK. So: no output, allow .ts import extensions.
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
