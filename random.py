@@ -1,29 +1,16 @@
-class Solution:
-    def isPalindrome(self, s: str) -> bool:
-        L, R = 0, len(s) - 1
-        while L <= R:
-            
-            if not s[L].isalnum():
-                L += 1
-                continue
+words = ['salsa']
 
-            if not s[R].isalnum():
-                R -= 1
-                continue
+for word in words:
+    count = [0] * 26
 
-            if s[L].lower() != s[R].lower():
-                return False
-            
-            L += 1
-            R -= 1
-        
-        return True
+    for c in word:
+        count[ord(c) - ord('a')] += 1
 
-sol = Solution()
-print(sol.isPalindrome("A man, a plan, a canal: Panama"))
+    key = tuple(count)
 
 
+print(count)
 """
-T: O(n)
-S: O(1)
+english character lower case salsa hashed
+[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]
 """
