@@ -48,9 +48,10 @@ def decode_strong(s: str) -> List[str]:
         while s[j] != '#':
             j += 1
         # 2. length = int(s[i:j])
-        length = int(s[i:j]) 
+        length = int(s[i:j]) #slicing
         # 3. word = s[j+1 : j+1+length]
         word = s[j+1 : j+1+length]
+        #j + 1 despues del #, j + 1 + length es la palabra
         # 4. res.append(word)
         res.append(word)
         # 5. i = j + 1 + length
@@ -60,3 +61,13 @@ def decode_strong(s: str) -> List[str]:
 
 string_to_decode_strong = (encode_strong(["Hello World", "Leetcode"]))
 print(decode_strong(string_to_decode_strong))
+
+
+"""
+ índice:  0   1   2   3   4   5   6   7   8   9  10  11  12  13
+ char:   '5' '#' 'h' 'e' 'l' 'l' 'o' '5' '#' 'w' 'o' 'r' 'l' 'd'
+ len(s) = 14
+
+
+
+"""
