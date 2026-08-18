@@ -26,7 +26,10 @@ from check import correr
 
 
 def cuenta_regresiva(n: int) -> List[int]:
-    raise NotImplementedError("borra esta linea y escribe tu solucion")
+    if n == 0:
+        return []
+    
+    return [n] + cuenta_regresiva(n - 1)
 
 
 CASOS = [
