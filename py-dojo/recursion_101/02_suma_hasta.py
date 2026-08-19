@@ -20,7 +20,11 @@ from check import correr
 
 
 def suma_hasta(n: int) -> int:
-    raise NotImplementedError("borra esta linea y escribe tu solucion")
+    if n == 0:
+        return 0
+    
+    sum = n
+    return sum + suma_hasta(n - 1)
 
 
 CASOS = [

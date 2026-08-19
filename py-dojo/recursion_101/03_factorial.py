@@ -21,7 +21,10 @@ from check import correr
 
 
 def factorial(n: int) -> int:
-    raise NotImplementedError("borra esta linea y escribe tu solucion")
+    if n == 0 or n == 1:
+        return 1
+    
+    return n * factorial(n-1)
 
 
 CASOS = [
